@@ -1,20 +1,7 @@
-import { useState } from 'react'
-import FormVagas from '../../components/FormVagas'
-
-import Vaga from '../../components/Vaga'
-
-import styles from './ListaVagas.module.css'
-
-type Vaga = {
-  id: string
-  titulo: string
-  localizacao: string
-  nivel: string
-  modalidade: string
-  salarioMin: number
-  salarioMax: number
-  requisitos: string[]
-}
+import { useState } from 'react';
+import FormVagas from '../../components/FormVagas';
+import Vaga from '../../components/Vaga';
+import styled from 'styled-components';
 
 const vagas = [
   {
@@ -87,19 +74,37 @@ const vagas = [
     salarioMax: 5000,
     requisitos: ['HTML', 'CSS', 'JavaScript', 'jQuery']
   }
-]
+];
+
+const ListaVagasWrapper = styled.div`
+margin: 0 auto;
+max-width: 1200px;
+padding: 20px;
+`;
+
+const VagasList = styled.ul`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 16px;
+  row-gap: 16px;
+  margin-top: 32px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+`;
 
 const ListaVagas = () => {
-  const [filtro, setFiltro] = useState<string>('')
+  const [filtro, setFiltro] = useState<string>('');
 
   const vagasFiltradas = vagas.filter(
     (x) => x.titulo.toLocaleLowerCase().search(filtro) >= 0
-  )
+  );
 
   return (
-    <div>
+    <ListaVagasWrapper>
       <FormVagas aoPesquisar={(termo: string) => setFiltro(termo)} />
-      <ul className={styles.vagas}>
+      <VagasList>
         {vagasFiltradas.map((vag) => (
           <Vaga
             key={vag.id}
@@ -112,9 +117,9 @@ const ListaVagas = () => {
             requisitos={vag.requisitos}
           />
         ))}
-      </ul>
-    </div>
-  )
-}
+      </VagasList>
+    </ListaVagasWrapper>
+  );
+};
 
-export default ListaVagas
+export default ListaVagas;
